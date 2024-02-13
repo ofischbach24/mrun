@@ -9,6 +9,7 @@ PWM_PIN = 18  # Replace with your PWM GPIO pin
 DIR_PIN = 23  # Replace with your direction GPIO pin
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 GPIO.setup(PWM_PIN, GPIO.OUT)
 GPIO.setup(DIR_PIN, GPIO.OUT)
 
