@@ -28,11 +28,11 @@ try:
         events = get_gamepad()
         for event in events:
             if event.ev_type == 'Key':
-                if event.ev_code == 'BTN_SOUTH' and event.ev_value == 1:
+                if event.code == 'BTN_SOUTH' and event.state == 1:
                     set_motor_direction('forward')
-                elif event.ev_code == 'BTN_NORTH' and event.ev_value == 1:
+                elif event.code == 'BTN_NORTH' and event.state == 1:
                     set_motor_direction('backward')
-                elif event.ev_code in ['BTN_SOUTH', 'BTN_NORTH'] and event.ev_value == 0:
+                elif event.code in ['BTN_SOUTH', 'BTN_NORTH'] and event.state == 0:
                     set_motor_direction('stop')
 
         time.sleep(0.01)
