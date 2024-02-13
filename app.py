@@ -4,8 +4,8 @@ import RPi.GPIO as GPIO
 from inputs import get_key
 import time
 
-motor_pin1 = 17  # Change GPIO pin according to your setup
-motor_pin2 = 18  # Change GPIO pin according to your setup
+motor_pin1 = 2  # Change GPIO pin according to your setup
+motor_pin2 = 12  # Change GPIO pin according to your setup
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(motor_pin1, GPIO.OUT)
