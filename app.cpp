@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include <libevdev/libevdev.h>
+#include <libevdev.h>
 #include <libevdev/libevdev-uinput.h>
 #include <pigpio.h>
 
