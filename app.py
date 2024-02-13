@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import RPi.GPIO as GPIO
-from inputs import get_key
+from inputs import get_gamepad
 import time
 
 motor_pin1 = 2  # Change GPIO pin according to your setup
