@@ -1,41 +1,57 @@
-#!/usr/bin/env python3
-
 import RPi.GPIO as GPIO
-from inputs import get_gamepad
 import time
+import sys
+import tty
+import termios
 
-motor_pin1 = 2  # Change GPIO pin according to your setup
-motor_pin2 = 12  # Change GPIO pin according to your setup
+# Set up GPIO pins for PWM and direction
+PWM_PIN = 18  # Replace with your PWM GPIO pin
+DIR_PIN = 23  # Replace with your direction GPIO pin
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(motor_pin1, GPIO.OUT)
-GPIO.setup(motor_pin2, GPIO.OUT)
+GPIO.setup(PWM_PIN, GPIO.OUT)
+GPIO.setup(DIR_PIN, GPIO.OUT)
 
-def set_motor_direction(direction):
-    if direction == 'forward':
-        GPIO.output(motor_pin1, GPIO.HIGH)
-        GPIO.output(motor_pin2, GPIO.LOW)
-    elif direction == 'backward':
-        GPIO.output(motor_pin1, GPIO.LOW)
-        GPIO.output(motor_pin2, GPIO.HIGH)
-    else:
-        GPIO.output(motor_pin1, GPIO.LOW)
-        GPIO.output(motor_pin2, GPIO.LOW)
+# Set up PWM
+pwm = GPIO.PWM(PWM_PIN, 1000)  # 1000 Hz frequency, you can adjust as needed
+pwm.start(0)  # Start PWM with duty cycle 0
 
+# Function to set motor direction
+def set_direction(direction):
+    GPIO.output(DIR_PIN, direction)
+
+# Function to set motor speed
+def set_speed(speed):
+    pwm.ChangeDutyCycle(speed)
+
+# Function to get keyboard input without waiting for Enter key
+def getch():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
+
+# Main loop to read keyboard inputs and control motors
 try:
     while True:
-        events = get_gamepad()
-        for event in events:
-            if event.ev_type == 'Key':
-                if event.code == 'BTN_SOUTH' and event.state == 1:
-                    set_motor_direction('forward')
-                elif event.code == 'BTN_NORTH' and event.state == 1:
-                    set_motor_direction('backward')
-                elif event.code in ['BTN_SOUTH', 'BTN_NORTH'] and event.state == 0:
-                    set_motor_direction('stop')
+        key = getch()
 
-        time.sleep(0.01)
+        if key == 'w':
+            set_direction(GPIO.HIGH)  # Forward
+            set_speed(50)  # Adjust speed as needed
+        elif key == 's':
+            set_direction(GPIO.LOW)  # Backward
+            set_speed(50)  # Adjust speed as needed
+        elif key == ' ':
+            set_speed(0)  # Stop
 
 except KeyboardInterrupt:
+    pass
+
+finally:
+    # Clean up GPIO on exit
     GPIO.cleanup()
