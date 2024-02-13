@@ -28,9 +28,9 @@ try:
         events = get_key()
         for event in events:
             if event.ev_type == 'Key':
-                if event.ev_code == 'BTN_A' and event.ev_value == 1:
+                if event.ev_code == 'BTN_NORTH' and event.ev_value == 1:
                     set_motor_direction('forward')
-                elif event.ev_code == 'BTN_B' and event.ev_value == 1:
+                elif event.ev_code == 'BTN_SOUTH' and event.ev_value == 1:
                     set_motor_direction('backward')
                 elif event.ev_code == 'BTN_A' or event.ev_code == 'BTN_B':
                     set_motor_direction('stop')
