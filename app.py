@@ -32,7 +32,7 @@ try:
                     set_motor_direction('forward')
                 elif event.ev_code == 'BTN_EAST' and event.ev_value == 1:
                     set_motor_direction('backward')
-                elif event.ev_code == 'BTN_SOUTH' or event.ev_code == 'BTN_EAST':
+                elif event.ev_code in ['BTN_SOUTH', 'BTN_EAST'] and event.ev_value == 0:
                     set_motor_direction('stop')
 
         time.sleep(0.01)
