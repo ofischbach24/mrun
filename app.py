@@ -1,11 +1,7 @@
 import time
 from gpiozero import OutputDevice
 from gpiozero.pins.pigpio import PiGPIOFactory
-from i2c import IoExpander
-import RPi.GPIO as GPIO
-
-# Disable GPIO warnings
-GPIO.setwarnings(False)
+from pimoroni_ioexpander import IoExpander
 
 # Set up the PiGPIOFactory for I2C communication
 i2c_factory = PiGPIOFactory()
