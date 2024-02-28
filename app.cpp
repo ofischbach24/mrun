@@ -13,6 +13,12 @@ int main() {
     wiringPiSetup();
     int ioExpander = wiringPiI2CSetup(ioExpanderAddress);
 
+    // Check for IO Expander initialization errors
+    if (ioExpander == -1) {
+        std::cerr << "Error initializing IO Expander. Exiting." << std::endl;
+        return 1;
+    }
+
     // Set PWM range (0 to 1023) - adjust as needed
     int pwmRange = 1023;
 
