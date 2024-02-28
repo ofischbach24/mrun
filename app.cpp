@@ -19,8 +19,8 @@ int main() {
         return 1;
     }
 
-    // Set PWM range (0 to 1023) - adjust as needed
-    int pwmRange = 1023;
+    // Set PWM range (0 to 255) - adjust as needed
+    int pwmRange = 255;
 
     // Set PWM frequency (Hz) - adjust as needed
     int pwmFrequency = 1000;
@@ -31,8 +31,8 @@ int main() {
 
     // Main PWM loop
     while (true) {
-        // Set PWM value (0 to pwmRange) - adjust as needed
-        int pwmValue = 512;
+        // Set PWM value (0 to 255) - adjust as needed
+        int pwmValue = 128;
 
         // Update PWM duty cycle
         wiringPiI2CWriteReg16(ioExpander, pwmPin, pwmValue);
