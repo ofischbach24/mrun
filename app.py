@@ -1,41 +1,44 @@
 import time
-import RPi.GPIO as GPIO
-from smbus import SMBus
-from pimoroni-ioexpander import ioexpander
+from pimoroni_ioexpander import ioexpander
+from ioexpander.motor import Motor, FAST_DECAY, SLOW_DECAY, NORMAL_DIR, REVERSED_DIR
 
-# Set the GPIO mode
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+ioe = ioexpander.SuperIOE()  # Replace IOE with SuperIOE for Nuvoton chip
 
 # Motor control pins
-DIR_PIN = 7  # Updated DIR pin
-PWM_PIN = 1  # Updated PWM pin
+DIR_PIN = 7  # Analog pin 7
+PWM_PIN = 1  # PWM pin 1
+motor = Motor(ioe, (DIR_PIN, PWM_PIN), direction=NORMAL_DIR, mode=SLOW_DECAY)
 
-# Setup motor control pins
-GPIO.setup(PWM_PIN, GPIO.OUT)
+# Set calibration parameters
+speed_scale = 1.0
+zeropoint = 0.0
+motor.speed_scale(speed_scale)
+motor.zeropoint(zeropoint)
 
-# I2C setup
-i2c_bus = SMBus(1)
+# Set duty cycle deadzone
+deadzone = 0.05
+motor.deadzone(deadzone)
 
-# Create IO Expander object
-expander = ioexpander.IOE(i2c_bus)
+# Set motor frequency
+frequency = 25000  # 25 KHz
+motor.frequency(frequency)
 
-# Example: Oscillate the motor using PWM and Pimoroni IO Expander
+# Example: Control the motor
 try:
-    pwm = GPIO.PWM(PWM_PIN, 1000)  # Frequency: 1000 Hz
-    pwm.start(50)  # Initial duty cycle: 50%
+    motor.start()  # Use start instead of enable
 
-    # Oscillate for 10 seconds
-    for _ in range(5):  # Oscillate 5 times
-        # Forward
-        expander.output(DIR_PIN, True)  # Set direction forward
-        time.sleep(2)
+    # Set an initial duty cycle
+    motor.duty(0.5)
+    time.sleep(2)
 
-        # Reverse
-        expander.output(DIR_PIN, False)  # Set direction reverse
-        time.sleep(2)
+    # Change the motor direction
+    motor.direction(REVERSED_DIR)
+    time.sleep(2)
+
+    # Change the decay mode
+    motor.decay_mode(FAST_DECAY)
+    time.sleep(2)
 
 finally:
     # Cleanup
-    pwm.stop()
-    GPIO.cleanup()
+    motor.stop()  # Use stop instead of disable
