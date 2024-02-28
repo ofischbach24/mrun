@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 from smbus import SMBus
-from pimoroni_ioexpander import ioexpander
+from pimoroni-ioexpander import ioexpander
 
 # Set the GPIO mode
 GPIO.setmode(GPIO.BCM)
