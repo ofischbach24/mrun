@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 
 # Set the GPIO mode
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 # Motor control pins
 DIR_PIN = 7  # Updated DIR pin
